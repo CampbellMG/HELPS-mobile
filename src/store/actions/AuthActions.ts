@@ -1,12 +1,13 @@
-import { AuthAction, AuthActionType } from '../../types/store/AuthActionTypes';
-import { Dispatch } from 'redux';
-import { push } from 'react-router-redux';
-import { RegisterFields } from '../../types/components/LoginTypes';
-import { isUndefined } from 'util';
+import {AuthAction, AuthActionType} from '../../types/store/AuthActionTypes';
+import {Dispatch} from 'redux';
+import {StackActions} from "react-navigation";
+import {navigate, resetTo} from '../../components/navigation/NavigationService'
+import {AsyncStorage} from "react-native";
 
 const requestLogin = (): AuthAction => ({
     type: AuthActionType.REQUEST_LOGIN
 });
+
 
 const receiveLogin = (isAdmin: boolean): AuthAction => ({
     type: AuthActionType.RECEIVE_LOGIN,
@@ -37,8 +38,8 @@ export const LS_ADMIN_KEY = 'id_admin';
 export const getExistingSession = () => async (dispatch: Dispatch<any>) => {
     dispatch(requestLogin());
 
-    const token = localStorage.getItem(LS_STORAGE_KEY);
-    const isAdmin = localStorage.getItem(LS_ADMIN_KEY) == '1';
+    const token = await AsyncStorage.getItem(LS_STORAGE_KEY);
+    const isAdmin = await AsyncStorage.getItem(LS_ADMIN_KEY) == '1';
 
     if (token !== null) {
         dispatch(receiveLogin(isAdmin));
@@ -55,9 +56,8 @@ export const login = (username: string, password: string) => async (dispatch: Di
         headers: new Headers({
             'content-type': 'application/json'
         }),
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({username, password})
     });
-
 
 
     const loginResult = await loginResponse.json();
@@ -68,40 +68,21 @@ export const login = (username: string, password: string) => async (dispatch: Di
     }
 
     // This is a bit sketchy but will work for now
-    localStorage.setItem(LS_STORAGE_KEY, loginResult.accessToken);
-    localStorage.setItem(LS_ADMIN_KEY, loginResult.isAdmin ? '1' : '0');
+    await AsyncStorage.setItem(LS_STORAGE_KEY, loginResult.accessToken);
+    await AsyncStorage.setItem(LS_ADMIN_KEY, loginResult.isAdmin ? '1' : '0');
 
     dispatch(receiveLogin(loginResult.isAdmin));
 
-    dispatch(push('/events'));
+    resetTo('/HomeTabs');
 };
 
 export const logout = () => async (dispatch: Dispatch<any>) => {
-    localStorage.removeItem(LS_STORAGE_KEY);
+    await AsyncStorage.removeItem(LS_STORAGE_KEY);
     dispatch(doLogout());
 };
 
-export const register = (registerRequest: RegisterFields | undefined) => async (dispatch: Dispatch<any>) => {
-    if (isUndefined(registerRequest)) {
-        dispatch(registerError('Did you properly fill all fields?'));
-    } else {
-        const registerResponse = await fetch('api/register', {
-            method: 'POST',
-            headers: new Headers({
-                'content-type': 'application/json'
-            }),
-            body: JSON.stringify(registerRequest)
-        });
-        if (registerResponse.ok) {
-            dispatch(push('/user'));
-        } else {
-            alert('Register failed: ' + registerResponse.statusText);
-        }
-    }
-};
-
-export function fetchToken(): string | null {
-    return localStorage.getItem(LS_STORAGE_KEY);
+export async function fetchToken(): Promise<string | null> {
+    return AsyncStorage.getItem(LS_STORAGE_KEY);
 }
 
 export const NO_TOKEN_MESSAGE: string = 'No token, have you authenticated?';

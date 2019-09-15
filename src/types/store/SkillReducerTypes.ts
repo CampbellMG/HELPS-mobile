@@ -1,7 +1,6 @@
 import { Skill } from '../model/Skill';
-import { Editable } from '../util/Editable';
 
-export interface SkillState extends Editable {
+export interface SkillState {
     skills: Skill[];
     searchTerm?: string;
     selectedSkill: Skill;

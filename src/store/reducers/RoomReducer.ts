@@ -1,7 +1,6 @@
 import {RoomAction, RoomActionTypes} from '../../types/store/RoomActionTypes';
 import {RoomState} from '../../types/store/RoomReducerTypes';
 import {Room} from '../../types/model/Room';
-import {isUndefined} from 'util';
 import {getIdentifiableIndexById, NO_MATCH} from '../../util';
 
 const initialRoom: Room = {id: 0, title: ''};
@@ -9,16 +8,14 @@ const initialState: RoomState = {
     rooms: [],
     selectedRoom: initialRoom,
     searchTerm: '',
-    editing: false,
     filter: '',
-    newRoomTitle: initialRoom.title,
-    isNewMode: false
+    newRoomTitle: initialRoom.title
 };
 
 export function RoomReducer(state: RoomState = initialState, action: RoomAction): RoomState {
     switch (action.type) {
         case (RoomActionTypes.RECEIVE):
-            if (isUndefined(action.rooms)) {
+            if (!action.rooms) {
                 return {...state, error: `Can't received undefined list of rooms`};
             } else {
                 let selectedRoom = action.rooms.length > 0 ? action.rooms[0] : {
@@ -38,15 +35,13 @@ export function RoomReducer(state: RoomState = initialState, action: RoomAction)
                 };
             }
         case (RoomActionTypes.SELECT):
-            if (isUndefined(action.room)) {
+            if (!action.room) {
                 return {...state, error: `Can't select undefined room`};
             } else {
                 return {
                     ...state,
                     selectedRoom: action.room,
-                    newRoomTitle: action.room.title,
-                    editing: false,
-                    isNewMode: false
+                    newRoomTitle: action.room.title
                 };
             }
         default:

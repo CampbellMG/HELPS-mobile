@@ -1,7 +1,6 @@
 import { SkillAction, SkillActionTypes } from '../../types/store/SkillActionTypes';
 import { SkillState } from '../../types/store/SkillReducerTypes';
 import { Skill } from '../../types/model/Skill';
-import { isUndefined } from 'util';
 import { NO_MATCH, getIdentifiableIndexById } from '../../util';
 
 const initialSkill: Skill = { id: 0, title: '' };
@@ -9,16 +8,14 @@ const initialState: SkillState = {
     skills: [],
     selectedSkill: initialSkill,
     searchTerm: '',
-    editing: false,
     filter: '',
-    newSkillTitle: initialSkill.title,
-    isNewMode: false
+    newSkillTitle: initialSkill.title
 };
 
 export function SkillReducer(state: SkillState = initialState, action: SkillAction): SkillState {
     switch (action.type) {
         case (SkillActionTypes.RECEIVE):
-            if (isUndefined(action.skills)) {
+            if (!action.skills) {
                 return { ...state, error: `Can't received undefined list of skills` };
             } else {
                 let selectedSkill = action.skills.length > 0 ? action.skills[0] : { id: Number.MAX_SAFE_INTEGER, title: 'Undefined title' };
@@ -35,15 +32,13 @@ export function SkillReducer(state: SkillState = initialState, action: SkillActi
                 };
             }
         case (SkillActionTypes.SELECT):
-            if (isUndefined(action.skill)) {
+            if (!action.skill) {
                 return { ...state, error: `Can't select undefined skill` };
             } else {
                 return {
                     ...state,
                     selectedSkill: action.skill,
-                    newSkillTitle: action.skill.title,
-                    editing: false,
-                    isNewMode: false
+                    newSkillTitle: action.skill.title
                 };
             }
         default:

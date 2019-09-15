@@ -35,7 +35,7 @@ export const updateAdvisor = (advisor: Advisor) => async (dispatch: Dispatch<Adv
 };
 
 export const deleteAdvisor = (advisor: Advisor) => async (dispatch: Dispatch<any>) => {
-    const token = fetchToken();
+    const token = await fetchToken();
     if (token === null) {
         return dispatch(advisorError(NO_TOKEN_MESSAGE));
     }
@@ -54,7 +54,7 @@ export const deleteAdvisor = (advisor: Advisor) => async (dispatch: Dispatch<any
 };
 
 async function saveAdvisor(advisor: Advisor, isNew: boolean, dispatch: Dispatch<AdvisorAction>) {
-    const token = fetchToken();
+    const token = await fetchToken();
     if (token === null) {
         return dispatch(advisorError(NO_TOKEN_MESSAGE));
     }
@@ -86,7 +86,7 @@ async function saveAdvisor(advisor: Advisor, isNew: boolean, dispatch: Dispatch<
 async function retrieveAdvisors(dispatch: Dispatch<AdvisorAction>) {
     dispatch(requestAdvisors());
 
-    const token = fetchToken();
+    const token = await fetchToken();
     if (token === null) {
         return dispatch(advisorError(NO_TOKEN_MESSAGE));
     }

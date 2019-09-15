@@ -2,7 +2,7 @@ import { SkillActionTypes, SkillAction } from '../../types/store/SkillActionType
 import { Dispatch } from 'react';
 import { fetchToken } from './AuthActions';
 import { Skill } from '../../types/model/Skill';
-import { fetchRequest } from '../../util';
+import {fetchRequest} from "../../util";
 
 const NO_TOKEN_MESSAGE: string = 'No token, have you authenticated?',
     API_SKILL_PATH = `api/skills`;
@@ -23,7 +23,7 @@ const selectSkillAction = (skill: Skill): SkillAction => ({
 });
 
 export const fetchSkills = () => async (dispatch: Dispatch<SkillAction>) => {
-    const token = fetchToken();
+    const token = await fetchToken();
     if (token === null) {
         dispatch(skillError(NO_TOKEN_MESSAGE));
     } else {
@@ -41,7 +41,7 @@ export const fetchSkills = () => async (dispatch: Dispatch<SkillAction>) => {
 };
 
 export const deleteSkill = (skill: Skill) => async (dispatch: Dispatch<any>) => {
-    const token = fetchToken();
+    const token = await fetchToken();
     if (token === null) {
         dispatch(skillError(NO_TOKEN_MESSAGE));
     } else {
@@ -59,7 +59,7 @@ export const deleteSkill = (skill: Skill) => async (dispatch: Dispatch<any>) => 
 };
 
 export const updateSkillName = (skillId: number, newTitle: string, isNewMode: boolean) => async (dispatch: Dispatch<SkillAction>) => {
-    const token = fetchToken();
+    const token = await fetchToken();
 
     if (token === null) {
         dispatch(skillError(NO_TOKEN_MESSAGE));

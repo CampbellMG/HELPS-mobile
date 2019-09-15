@@ -2,7 +2,7 @@ import {Dispatch} from 'redux';
 import {Message} from '../../types/model/Message';
 import {MessageAction, MessageActionTypes} from '../../types/store/MessageActionTypes';
 import {fetchToken, NO_TOKEN_MESSAGE} from './AuthActions';
-import {fetchRequest} from '../../util';
+import {fetchRequest} from "../../util";
 
 const MESSAGES_PATH = 'api/messages';
 
@@ -21,7 +21,7 @@ export const fetchMessages = () => async (dispatch: Dispatch<any>) => {
 };
 
 export const saveMessage = (message: Message) => async (dispatch: Dispatch<any>) => {
-    const token = fetchToken();
+    const token = await fetchToken();
     if (token === null) {
         dispatch(messageError(NO_TOKEN_MESSAGE));
     } else {
@@ -41,7 +41,7 @@ export const saveMessage = (message: Message) => async (dispatch: Dispatch<any>)
 };
 
 async function retrieveMessages(dispatch: Dispatch<any>) {
-    const token = fetchToken();
+    const token = await fetchToken();
     if (token === null) {
         dispatch(messageError(NO_TOKEN_MESSAGE));
     } else {
