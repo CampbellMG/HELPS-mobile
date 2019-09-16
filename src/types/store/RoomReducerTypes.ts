@@ -1,7 +1,6 @@
 import { Room } from '../model/Room';
-import { Editable } from '../util/Editable';
 
-export interface RoomState extends Editable {
+export interface RoomState {
     rooms: Room[];
     searchTerm?: string;
     selectedRoom: Room;

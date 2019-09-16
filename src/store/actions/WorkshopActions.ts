@@ -1,7 +1,7 @@
 import {Dispatch} from 'redux';
 import {WorkshopAction, WorkshopActionType} from '../../types/store/WorkshopActionTypes';
 import {Workshop} from '../../types/model/Workshop';
-import {authenticatedFetch} from '../../util';
+import {authenticatedFetch} from "../../util";
 
 const ENDPOINT_WORKSHOP = 'api/workshops';
 const ENDPOINT_STUDENT_WORKSHOP = 'api/students/workshops';

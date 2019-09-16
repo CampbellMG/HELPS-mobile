@@ -2,6 +2,7 @@ import {Dispatch} from 'redux';
 import {LS_STORAGE_KEY} from './AuthActions';
 import {EmailAction, EmailActionsType} from '../../types/store/EmailActionTypes';
 import {Email} from '../../types/model/Email';
+import {AsyncStorage} from "react-native";
 
 const requestEmails = (): EmailAction => ({
     type: EmailActionsType.REQUEST_EMAIL
@@ -40,7 +41,7 @@ async function getEmails(token: string): Promise<Email[]> {
 export const retrieveEmails = () => async (dispatch: Dispatch<any>) => {
     dispatch(requestEmails());
 
-    const token = localStorage.getItem(LS_STORAGE_KEY);
+    const token = await AsyncStorage.getItem(LS_STORAGE_KEY);
 
     if (token === null) {
         dispatch(emailError('No token, have you authenticated?'));
@@ -68,7 +69,7 @@ export const retrieveEmails = () => async (dispatch: Dispatch<any>) => {
 export const updateEmail = (email: Email) => async (dispatch: Dispatch<any>) => {
     dispatch(submitEmail());
 
-    const token = localStorage.getItem(LS_STORAGE_KEY);
+    const token = await AsyncStorage.getItem(LS_STORAGE_KEY);
 
     if (token === null) {
         dispatch(emailError('No token, have you authenticated?'));

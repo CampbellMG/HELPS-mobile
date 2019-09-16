@@ -1,9 +1,7 @@
 import {Dispatch} from 'redux';
-import {LS_STORAGE_KEY} from './AuthActions';
 import {SessionAction, SessionActionType} from '../../types/store/SessionActionTypes';
 import {Session} from '../../types/model/Session';
-import {authenticatedFetch} from '../../util';
-import {act} from 'react-dom/test-utils';
+import {authenticatedFetch} from "../../util";
 
 const ENDPOINT_SESSION = 'api/sessions';
 const ENDPOINT_STUDENT_SESSION = 'api/students/sessions';

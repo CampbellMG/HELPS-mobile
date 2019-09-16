@@ -2,6 +2,7 @@ import {Dispatch} from 'redux';
 import {UserAction, UserActionType} from '../../types/store/UserActionTypes';
 import {Student} from '../../types/model/Student';
 import {LS_STORAGE_KEY} from './AuthActions';
+import {AsyncStorage} from "react-native";
 
 const requestUser = (): UserAction => ({
     type: UserActionType.REQUEST_USER
@@ -20,7 +21,7 @@ const userError = (message: string): UserAction => ({
 export const updateUser = (user: Student) => async (dispatch: Dispatch<any>) => {
     dispatch(requestUser());
 
-    const token = localStorage.getItem(LS_STORAGE_KEY);
+    const token = await AsyncStorage.getItem(LS_STORAGE_KEY);
 
     if (token === null) {
         dispatch(userError('No token, have you authenticated?'));
@@ -55,7 +56,7 @@ export const updateUser = (user: Student) => async (dispatch: Dispatch<any>) => 
 export const retrieveUser = () => async (dispatch: Dispatch<any>) => {
     dispatch(requestUser());
 
-    const token = localStorage.getItem(LS_STORAGE_KEY);
+    const token = await AsyncStorage.getItem(LS_STORAGE_KEY);
 
     if (token === null) {
         dispatch(userError('No token, have you authenticated?'));

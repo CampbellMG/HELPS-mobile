@@ -2,7 +2,7 @@ import { RoomActionTypes, RoomAction } from '../../types/store/RoomActionTypes';
 import { Dispatch } from 'react';
 import { fetchToken } from './AuthActions';
 import { Room } from '../../types/model/Room';
-import { fetchRequest } from '../../util';
+import {fetchRequest} from "../../util";
 
 const NO_TOKEN_MESSAGE: string = 'No token, have you authenticated?',
     API_ROOM_PATH = `api/rooms`;
@@ -23,7 +23,7 @@ const selectRoomAction = (room: Room): RoomAction => ({
 });
 
 export const fetchRooms = () => async (dispatch: Dispatch<RoomAction>) => {
-    const token = fetchToken();
+    const token = await fetchToken();
     if (token === null) {
         dispatch(roomError(NO_TOKEN_MESSAGE));
     } else {
@@ -41,7 +41,7 @@ export const fetchRooms = () => async (dispatch: Dispatch<RoomAction>) => {
 };
 
 export const deleteRoom = (room: Room) => async (dispatch: Dispatch<any>) => {
-    const token = fetchToken();
+    const token = await fetchToken();
     if (token === null) {
         dispatch(roomError(NO_TOKEN_MESSAGE));
     } else {
@@ -59,7 +59,7 @@ export const deleteRoom = (room: Room) => async (dispatch: Dispatch<any>) => {
 };
 
 export const updateRoomName = (roomId: number, newTitle: string, isNewMode: boolean) => async (dispatch: Dispatch<RoomAction>) => {
-    const token = fetchToken();
+    const token = await fetchToken();
 
     if (token === null) {
         dispatch(roomError(NO_TOKEN_MESSAGE));
