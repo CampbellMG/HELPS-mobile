@@ -1,63 +1,76 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
-import {PRIMARY} from "../../res/Colours";
+import {Image, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {LoginStyle} from "../../styles/Login";
+import {
+    LoginDispatchProps,
+    LoginProps,
+    LoginState,
+    LoginStateProps
+} from "../../types/components/Login";
+import {connect} from "react-redux";
+import {AppState} from "../../types/store/StoreTypes";
+import {ThunkDispatch} from 'redux-thunk';
+import {login} from "../../store/actions/AuthActions";
 
-export class Login extends React.Component<{}, {}> {
+class Login extends React.Component<LoginProps, LoginState> {
+
+    constructor(props: LoginProps) {
+        super(props);
+
+        this.state = {
+            username: '',
+            password: ''
+        }
+    }
+
+
     render() {
+        const {username, password} = this.state
         return (
-            <View style={styles.container}>
-                <View style={{
-                    borderWidth: 5,
-                    borderColor: PRIMARY,
-                    paddingVertical: 30,
-                    paddingHorizontal: 60,
-                    borderRadius: 1000,
-                    alignSelf: 'center',
-                    marginBottom: 128
-                }}>
-                    <Image source={require('../../../assets/uts.png')} style={{
-                        height: 125,
-                        width: 74
-                    }}/>
+            <View style={LoginStyle.container}>
+                <View style={LoginStyle.imageWrapper}>
+                    <Image style={LoginStyle.image}
+                           source={require('../../../assets/uts.png')}/>
                 </View>
-                <Text style={{fontSize: 16}}>Email</Text>
-                <TextInput style={{
-                    borderWidth: 2,
-                    borderColor: PRIMARY,
-                    borderRadius: 10,
-                    marginBottom: 32,
-                    marginTop: 8,
-                    fontSize: 16,
-                    padding: 8,
-                    paddingHorizontal: 16
-                }}/>
-                <Text style={{fontSize: 16}}>Password</Text>
-                <TextInput  style={{
-                    borderWidth: 2,
-                    borderColor: PRIMARY,
-                    borderRadius: 10,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: 32,
-                    marginTop: 8,
-                    fontSize: 16,
-                    padding: 8,
-                    paddingHorizontal: 16
-                }}/>
-                <TouchableOpacity style={{backgroundColor: PRIMARY, padding: 15, borderRadius: 10, marginTop: 32}}>
-                    <Text style={{fontSize: 30, color: 'white', textAlign: 'center'}}>Login</Text>
-                </TouchableOpacity>
+
+                <KeyboardAvoidingView behavior='position'>
+                    <Text style={LoginStyle.inputLabel}>
+                        Email
+                    </Text>
+                    <TextInput style={LoginStyle.usernameInput}
+                               onChangeText={this.onUserNameChanged}
+                               value={username}/>
+
+                    <Text style={LoginStyle.inputLabel}>
+                        Password
+                    </Text>
+                    <TextInput style={LoginStyle.passwordInput}
+                               secureTextEntry
+                               onChangeText={this.onPasswordChanged}
+                               value={password}/>
+
+                    <TouchableOpacity style={LoginStyle.buttonWrapper}
+                                      onPress={this.onLogin}>
+                        <Text style={LoginStyle.button}>Login</Text>
+                    </TouchableOpacity>
+                </KeyboardAvoidingView>
             </View>
         );
     }
+
+    private onUserNameChanged = (username: string) => this.setState({username});
+    private onPasswordChanged = (password: string) => this.setState({password});
+    private onLogin = () => this.props.login(this.state.username, this.state.password);
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'stretch',
-        justifyContent: 'center',
-        padding: 32
-    },
+const mapStateToProps = (state: AppState): LoginStateProps => ({
+    error: state.auth.error
 });
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>): LoginDispatchProps => ({
+    login: (username, password) => dispatch(login(username, password))
+});
+
+export default connect<LoginStateProps, LoginDispatchProps, {}, AppState>(mapStateToProps, mapDispatchToProps)(Login)
+
+

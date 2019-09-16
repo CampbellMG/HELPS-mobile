@@ -59,7 +59,6 @@ export const login = (username: string, password: string) => async (dispatch: Di
         body: JSON.stringify({username, password})
     });
 
-
     const loginResult = await loginResponse.json();
 
     if (!loginResponse.ok || !loginResult.accessToken) {
@@ -73,7 +72,7 @@ export const login = (username: string, password: string) => async (dispatch: Di
 
     dispatch(receiveLogin(loginResult.isAdmin));
 
-    resetTo('/HomeTabs');
+    resetTo('HomeTabs');
 };
 
 export const logout = () => async (dispatch: Dispatch<any>) => {

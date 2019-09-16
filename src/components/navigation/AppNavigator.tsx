@@ -3,7 +3,7 @@ import {Profile} from "../screens/Profile";
 import {FAQ} from "../screens/FAQ";
 import {createAppContainer} from "react-navigation";
 import {NAV_BAR_GREY} from "../../res/Colours";
-import {Login} from "../screens/Login";
+import Login from "../screens/Login";
 import {createStackNavigator} from "react-navigation-stack";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
 import React from "react";
