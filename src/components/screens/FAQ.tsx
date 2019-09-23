@@ -5,6 +5,7 @@ import {AppState} from "../../types/store/StoreTypes";
 import {FAQDispatchProps, FAQProps, FAQState, FAQStateProps} from "../../types/components/FAQ";
 import {ThunkDispatch} from 'redux-thunk';
 import {fetchMessages} from "../../store/actions/MessageActions";
+import {PRIMARY} from "../../res/Colours";
 
 class FAQ extends React.Component<FAQProps, FAQState> {
 
@@ -26,18 +27,18 @@ class FAQ extends React.Component<FAQProps, FAQState> {
         const {selectedContentType} = this.state;
 
         return (
-            <View style={{marginTop: StatusBar.currentHeight, flex: 1}}>
+            <View style={{marginTop: StatusBar.currentHeight, flex: 1, backgroundColor: 'white'}}>
 
                 <View style={{flexDirection: 'row'}}>
-                    <TouchableOpacity style={{flex: 1, paddingVertical: 16}}
+                    <TouchableOpacity style={{flex: 1, paddingVertical: 16, backgroundColor: PRIMARY}}
                                       onPress={this.setProgramsActive}>
-                        <Text style={{textAlign: 'center'}}>
+                        <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold'}}>
                             Programs
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1,  paddingVertical: 16}}
+                    <TouchableOpacity style={{flex: 1, paddingVertical: 16, backgroundColor: PRIMARY}}
                                       onPress={this.setFAQActive}>
-                        <Text style={{textAlign: 'center'}}>
+                        <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold'}}>
                             FAQ
                         </Text>
                     </TouchableOpacity>
@@ -45,7 +46,7 @@ class FAQ extends React.Component<FAQProps, FAQState> {
 
                 <WebView
                     originWhitelist={['*']}
-                    style={{flex: 1}}
+                    style={{flex: 1, margin: 8}}
                     source={{html: selectedContentType === "PROGRAMS" ? programs : FAQ}}/>
 
             </View>
