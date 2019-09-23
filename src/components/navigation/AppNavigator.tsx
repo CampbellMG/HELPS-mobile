@@ -1,5 +1,5 @@
 import {Events} from "../screens/Events";
-import {Profile} from "../screens/Profile";
+import Profile from "../screens/Profile";
 import FAQ from "../screens/FAQ";
 import {createAppContainer} from "react-navigation";
 import {NAV_BAR_GREY} from "../../res/Colours";

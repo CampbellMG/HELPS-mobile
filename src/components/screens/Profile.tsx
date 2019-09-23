@@ -1,21 +1,20 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {View} from 'react-native';
+import {AppState} from "../../types/store/StoreTypes";
+import {ThunkDispatch} from "redux-thunk";
+import {connect} from "react-redux";
+import {ProfileDispatchProps, ProfileProps, ProfileState, ProfileStateProps} from "../../types/components/Profile";
 
-export class Profile extends React.Component<{}, {}> {
+class Profile extends React.Component<ProfileProps, ProfileState> {
     render() {
         return (
-            <View style={styles.container}>
-                <Text>Open up App.tsx to start working on your app!</Text>
-            </View>
+            <View/>
         );
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
+const mapStateToProps = (state: AppState): ProfileStateProps => ({});
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>): ProfileDispatchProps => ({});
+
+export default connect<ProfileStateProps, ProfileDispatchProps, {}, AppState>(mapStateToProps, mapDispatchToProps)(Profile)
