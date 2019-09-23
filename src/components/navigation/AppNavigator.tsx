@@ -1,6 +1,6 @@
 import {Events} from "../screens/Events";
 import {Profile} from "../screens/Profile";
-import {FAQ} from "../screens/FAQ";
+import FAQ from "../screens/FAQ";
 import {createAppContainer} from "react-navigation";
 import {NAV_BAR_GREY} from "../../res/Colours";
 import Login from "../screens/Login";

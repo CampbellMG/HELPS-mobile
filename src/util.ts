@@ -26,11 +26,11 @@ export const fetchRequest = (
         }) :
         ({
             method: method,
-            headers: new Headers({
+            headers: (token ? new Headers({
                 'Authorization': `Bearer ${token}`
-            })
+            }) : {})
         });
-    return fetch(path, options).then((result) => {
+    return fetch(`http://localhost:5000/${path}`, options).then((result) => {
         if (result.ok) {
             return Promise.resolve(result.json());
         } else {

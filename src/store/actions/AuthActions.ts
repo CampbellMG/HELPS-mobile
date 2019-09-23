@@ -1,7 +1,6 @@
 import {AuthAction, AuthActionType} from '../../types/store/AuthActionTypes';
 import {Dispatch} from 'redux';
-import {StackActions} from "react-navigation";
-import {navigate, resetTo} from '../../components/navigation/NavigationService'
+import {resetTo} from '../../components/navigation/NavigationService'
 import {AsyncStorage} from "react-native";
 
 const requestLogin = (): AuthAction => ({
@@ -41,9 +40,11 @@ export const getExistingSession = () => async (dispatch: Dispatch<any>) => {
     const token = await AsyncStorage.getItem(LS_STORAGE_KEY);
     const isAdmin = await AsyncStorage.getItem(LS_ADMIN_KEY) == '1';
 
+    console.log(token);
+
     if (token !== null) {
         dispatch(receiveLogin(isAdmin));
-        // dispatch(push('/user')); // locally I have this line commented out because it breaks things. WS
+        resetTo('HomeTabs');
         return;
     }
 };
@@ -51,7 +52,7 @@ export const getExistingSession = () => async (dispatch: Dispatch<any>) => {
 export const login = (username: string, password: string) => async (dispatch: Dispatch<any>) => {
     dispatch(requestLogin());
 
-    const loginResponse = await fetch('api/login', {
+    const loginResponse = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
         headers: new Headers({
             'content-type': 'application/json'
