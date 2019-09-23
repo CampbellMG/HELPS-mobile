@@ -1,4 +1,4 @@
-import {Events} from "../screens/Events";
+import Events from "../screens/Events";
 import Profile from "../screens/Profile";
 import FAQ from "../screens/FAQ";
 import {createAppContainer} from "react-navigation";
