@@ -40,8 +40,6 @@ export const getExistingSession = () => async (dispatch: Dispatch<any>) => {
     const token = await AsyncStorage.getItem(LS_STORAGE_KEY);
     const isAdmin = await AsyncStorage.getItem(LS_ADMIN_KEY) == '1';
 
-    console.log(token);
-
     if (token !== null) {
         dispatch(receiveLogin(isAdmin));
         resetTo('HomeTabs');

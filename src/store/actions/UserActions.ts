@@ -76,8 +76,6 @@ export const retrieveUser = () => async (dispatch: Dispatch<any>) => {
         return;
     }
 
-    console.log(userResult);
-
     if (!Array.isArray(userResult)) {
         userResult = [userResult];
     }

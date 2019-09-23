@@ -1,6 +1,6 @@
 export interface HELPSEvent {
     id: number
-    startDate: string
+    startTime: string
     endDate: string
     roomId: number
 }

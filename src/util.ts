@@ -71,7 +71,7 @@ export const authenticatedFetch = async (
             })
         };
 
-    const result = await fetch(path, options);
+    const result = await fetch(`http://localhost:5000/${path}`, options);
     if (result.ok) {
         return result.json();
     }
