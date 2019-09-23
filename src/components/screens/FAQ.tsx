@@ -1,8 +1,8 @@
-import React, {ComponentType} from 'react';
-import {FlatList, ListRenderItem, ListRenderItemInfo, TouchableOpacity, View, WebView} from 'react-native';
+import React from 'react';
+import {StatusBar, Text, TouchableOpacity, View, WebView} from 'react-native';
 import {connect} from "react-redux";
 import {AppState} from "../../types/store/StoreTypes";
-import {ContentType, FAQDispatchProps, FAQProps, FAQState, FAQStateProps} from "../../types/components/FAQ";
+import {FAQDispatchProps, FAQProps, FAQState, FAQStateProps} from "../../types/components/FAQ";
 import {ThunkDispatch} from 'redux-thunk';
 import {fetchMessages} from "../../store/actions/MessageActions";
 
@@ -22,31 +22,38 @@ class FAQ extends React.Component<FAQProps, FAQState> {
     }
 
     render() {
-        return (
-            <View>
-                <FlatList data={['PROGRAMS', 'FAQ']}
-                          renderItem={this.renderInformationBlock}/>
-            </View>
-        );
-    }
-
-    private renderInformationBlock = (data: ListRenderItemInfo<ContentType>) => {
-        const {item} = data;
         const {programs, FAQ} = this.props.messages;
         const {selectedContentType} = this.state;
 
         return (
-            <View>
-                <TouchableOpacity onPress={() => this.setState({selectedContentType: item})}>
-                    {item}
-                </TouchableOpacity>
-                {selectedContentType === item &&
-                <WebView originWhitelist={['*']}
-                         source={{html: item === "PROGRAMS" ? programs : FAQ}}/>}
+            <View style={{marginTop: StatusBar.currentHeight, flex: 1}}>
+
+                <View style={{flexDirection: 'row'}}>
+                    <TouchableOpacity style={{flex: 1, paddingVertical: 16}}
+                                      onPress={this.setProgramsActive}>
+                        <Text style={{textAlign: 'center'}}>
+                            Programs
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{flex: 1,  paddingVertical: 16}}
+                                      onPress={this.setFAQActive}>
+                        <Text style={{textAlign: 'center'}}>
+                            FAQ
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
+                <WebView
+                    originWhitelist={['*']}
+                    style={{flex: 1}}
+                    source={{html: selectedContentType === "PROGRAMS" ? programs : FAQ}}/>
 
             </View>
-        )
+        );
     }
+
+    private setProgramsActive = () => this.setState({selectedContentType: "PROGRAMS"})
+    private setFAQActive = () => this.setState({selectedContentType: "FAQ"})
 }
 
 const mapStateToProps = (state: AppState): FAQStateProps => ({

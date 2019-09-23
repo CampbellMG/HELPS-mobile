@@ -6,6 +6,7 @@ export interface LoginStateProps {
 
 export interface LoginDispatchProps {
     login: (username: string, password: string) => void
+    getExistingSession: () => void
 }
 
 export interface LoginProps extends LoginDispatchProps, LoginStateProps {

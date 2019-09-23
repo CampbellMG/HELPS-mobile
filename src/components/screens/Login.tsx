@@ -1,16 +1,11 @@
 import React from 'react';
 import {Image, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {LoginStyle} from "../../styles/Login";
-import {
-    LoginDispatchProps,
-    LoginProps,
-    LoginState,
-    LoginStateProps
-} from "../../types/components/Login";
+import {LoginDispatchProps, LoginProps, LoginState, LoginStateProps} from "../../types/components/Login";
 import {connect} from "react-redux";
 import {AppState} from "../../types/store/StoreTypes";
 import {ThunkDispatch} from 'redux-thunk';
-import {login} from "../../store/actions/AuthActions";
+import {getExistingSession, login} from "../../store/actions/AuthActions";
 
 class Login extends React.Component<LoginProps, LoginState> {
 
@@ -23,9 +18,12 @@ class Login extends React.Component<LoginProps, LoginState> {
         }
     }
 
+    componentDidMount(): void {
+        this.props.getExistingSession();
+    }
 
     render() {
-        const {username, password} = this.state
+        const {username, password} = this.state;
         return (
             <View style={LoginStyle.container}>
                 <View style={LoginStyle.imageWrapper}>
@@ -68,7 +66,8 @@ const mapStateToProps = (state: AppState): LoginStateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>): LoginDispatchProps => ({
-    login: (username, password) => dispatch(login(username, password))
+    login: (username, password) => dispatch(login(username, password)),
+    getExistingSession: () => dispatch(getExistingSession())
 });
 
 export default connect<LoginStateProps, LoginDispatchProps, {}, AppState>(mapStateToProps, mapDispatchToProps)(Login)
