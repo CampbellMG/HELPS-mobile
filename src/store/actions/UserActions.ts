@@ -28,7 +28,7 @@ export const updateUser = (user: Student) => async (dispatch: Dispatch<any>) => 
         return;
     }
 
-    const userResponse = await fetch('api/students', {
+    const userResponse = await fetch('http://localhost:5000/api/students', {
         method: 'PUT',
         headers: new Headers({
             'Authorization': `Bearer ${token}`,
@@ -63,7 +63,7 @@ export const retrieveUser = () => async (dispatch: Dispatch<any>) => {
         return;
     }
 
-    const userResponse = await fetch('api/students', {
+    const userResponse = await fetch('http://localhost:5000/api/students', {
         headers: new Headers({
             'Authorization': `Bearer ${token}`
         })
@@ -75,6 +75,8 @@ export const retrieveUser = () => async (dispatch: Dispatch<any>) => {
         dispatch(userError(userResult.message ? userResult.message : 'Retrieve user request failed'));
         return;
     }
+
+    console.log(userResult);
 
     if (!Array.isArray(userResult)) {
         userResult = [userResult];

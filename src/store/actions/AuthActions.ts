@@ -78,6 +78,7 @@ export const login = (username: string, password: string) => async (dispatch: Di
 
 export const logout = () => async (dispatch: Dispatch<any>) => {
     await AsyncStorage.removeItem(LS_STORAGE_KEY);
+    resetTo('Login');
     dispatch(doLogout());
 };
 
