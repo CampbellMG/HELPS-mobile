@@ -2,6 +2,7 @@ import {ImageStyle, TextStyle, ViewStyle} from "react-native";
 import {MessageDictionary} from "../model/Message";
 import {Workshop} from "../model/Workshop";
 import {Session} from "../model/Session";
+import {NavigationScreenProp} from 'react-navigation';
 
 export interface EventStateProps {
     workshops: Workshop[]
@@ -20,7 +21,7 @@ export interface EventDispatchProps {
 }
 
 export interface EventProps extends EventDispatchProps, EventStateProps {
-
+    navigation: NavigationScreenProp<{}, {showOnlyBooked: boolean}>
 }
 
 export interface EventState {

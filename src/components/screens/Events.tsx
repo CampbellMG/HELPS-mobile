@@ -15,7 +15,14 @@ import {PRIMARY, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY} from '../../res/Co
 
 class Events extends React.Component<EventProps, EventState> {
     private get events(): AgendaItemsMap<HELPSEvent> {
-        return [...this.props.sessions, ...this.props.workshops].reduce((accumulator, currentValue) => {
+        let events: HELPSEvent[] = [...this.props.sessions, ...this.props.assignedWorkshops];
+
+        if (!this.props.navigation.getParam('showOnlyBooked')){
+            const assignedWorkshopIds = this.props.assignedWorkshops.map(workshop => workshop.id);
+            events = this.props.workshops.filter(workshop => !assignedWorkshopIds.includes(workshop.id))
+        }
+
+        return events.reduce((accumulator, currentValue) => {
             const startTime = moment(currentValue.startTime).format("YYYY-MM-DD");
             if (startTime in accumulator) {
                 accumulator[startTime].push(currentValue);

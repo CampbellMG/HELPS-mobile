@@ -24,9 +24,22 @@ const homeTabNavigator = createMaterialBottomTabNavigator({
             tabBarIcon: ({focused}: { focused: boolean }) => {
                 return <CalendarIcon size={focused ? 30 : 20} color='black'/>;
             }
+        },
+        params: {
+            showOnlyBooked: false
         }
     },
-
+    MyEvents: {
+        screen: Events,
+        navigationOptions: {
+            tabBarIcon: ({focused}: { focused: boolean }) => {
+                return <CalendarIcon size={focused ? 30 : 20} color='black'/>;
+            }
+        },
+        params: {
+            showOnlyBooked: true
+        }
+    },
     FAQ: {
         screen: FAQ,
         navigationOptions: {
