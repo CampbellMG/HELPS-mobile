@@ -47,7 +47,8 @@ export const authenticatedFetch = async (
     path: string,
     method: 'POST' | 'GET' | 'PUT' | 'DELETE' = 'GET',
     body: {} = {},
-    includeJsonContentType: boolean = false
+    includeJsonContentType: boolean = false,
+    jsonResult = true
 ): Promise<any> => {
     const token = await fetchToken();
 
@@ -72,8 +73,13 @@ export const authenticatedFetch = async (
         };
 
     const result = await fetch(`http://localhost:5000/${path}`, options);
+
     if (result.ok) {
-        return result.json();
+        if(jsonResult){
+            return result.json();
+        }
+
+        return {}
     }
 
     throw Error(`Request failed: ${result.statusText}`);

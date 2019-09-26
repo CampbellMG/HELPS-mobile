@@ -6,20 +6,28 @@ import {EventDispatchProps, EventProps, EventState, EventStateProps} from "../..
 import {Agenda, AgendaItemsMap} from "react-native-calendars";
 import {HELPSEvent} from "../../types/model/HELPSEvent";
 import {StatusBar, Text, TouchableOpacity, View} from 'react-native';
-import {bookSession, retrieveSessions, retrieveUserSessions} from '../../store/actions/SessionActions';
-import {bookWorkshop, retrieveUserWorkshops, retrieveWorkshops} from '../../store/actions/WorkshopActions';
+import {bookSession, cancelSession, retrieveSessions, retrieveUserSessions} from '../../store/actions/SessionActions';
+import {
+    bookWorkshop,
+    cancelWorkshop,
+    retrieveUserWorkshops,
+    retrieveWorkshops
+} from '../../store/actions/WorkshopActions';
 import moment from 'moment';
 import {Workshop} from '../../types/model/Workshop';
-import {Session} from '../../types/model/Session';
+import {isSession, Session} from '../../types/model/Session';
 import {PRIMARY, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY} from '../../res/Colours';
 
 class Events extends React.Component<EventProps, EventState> {
+
+    private showOnlyBooked: boolean;
+
     private get events(): AgendaItemsMap<HELPSEvent> {
         let events: HELPSEvent[] = [...this.props.sessions, ...this.props.assignedWorkshops];
 
-        if (!this.props.navigation.getParam('showOnlyBooked')){
+        if (!this.showOnlyBooked) {
             const assignedWorkshopIds = this.props.assignedWorkshops.map(workshop => workshop.id);
-            events = this.props.workshops.filter(workshop => !assignedWorkshopIds.includes(workshop.id))
+            events = this.props.workshops.filter(workshop => !assignedWorkshopIds.includes(workshop.id));
         }
 
         return events.reduce((accumulator, currentValue) => {
@@ -39,6 +47,8 @@ class Events extends React.Component<EventProps, EventState> {
         this.props.retrieveUserWorkshops();
         this.props.retrieveSessions();
         this.props.retrieveUserSessions();
+
+        this.showOnlyBooked = this.props.navigation.getParam('showOnlyBooked');
     }
 
     render() {
@@ -65,28 +75,44 @@ class Events extends React.Component<EventProps, EventState> {
     }
 
     private renderEvent = (event: HELPSEvent): ReactElement => {
-        const isSession = 'purpose' in (event as Session);
+        const eventIsSession = isSession(event);
         const {bookSession, bookWorkshop} = this.props;
         return (
-            <View style={{backgroundColor: 'white', padding: 16, marginTop: 8, marginBottom: 8, marginRight: 8, elevation: 5}}>
+            <View style={{
+                backgroundColor: 'white',
+                padding: 16,
+                marginTop: 8,
+                marginBottom: 8,
+                marginRight: 8,
+                elevation: 5
+            }}>
                 <View style={{flexDirection: 'row', marginBottom: 12}}>
-                    <Text style={{fontSize: 18, color: TEXT_SECONDARY}}>{moment(event.startTime).format('hh:MM a')}</Text>
+                    <Text
+                        style={{fontSize: 18, color: TEXT_SECONDARY}}>{moment(event.startTime).format('hh:MM a')}</Text>
                     <Text style={{fontSize: 18, color: TEXT_SECONDARY}}> - </Text>
-                    <Text style={{fontSize: 18, color: TEXT_SECONDARY}}>{moment(event.startTime).format('hh:MM a')}</Text>
+                    <Text
+                        style={{fontSize: 18, color: TEXT_SECONDARY}}>{moment(event.startTime).format('hh:MM a')}</Text>
                 </View>
 
-                {isSession ? this.renderSession(event as Session) : this.renderWorkshop(event as Workshop)}
+                {eventIsSession ? Events.renderSession(event as Session) : Events.renderWorkshop(event as Workshop)}
 
                 <TouchableOpacity
-                    style={{backgroundColor: PRIMARY, padding: 8, borderRadius: 4, alignSelf: 'flex-end', paddingHorizontal: 16, marginTop: 8}}
-                    onPress={() => isSession ? bookSession(event as Session) : bookWorkshop(event as Workshop)}>
-                    <Text style={{color: 'white'}}>Book</Text>
+                    style={{
+                        backgroundColor: PRIMARY,
+                        padding: 8,
+                        borderRadius: 4,
+                        alignSelf: 'flex-end',
+                        paddingHorizontal: 16,
+                        marginTop: 8
+                    }}
+                    onPress={() => this.handleEventSelection(event)}>
+                    <Text style={{color: 'white'}}>{this.showOnlyBooked ? 'Cancel' : 'Book'}</Text>
                 </TouchableOpacity>
             </View>
         );
     };
 
-    private renderSession(session: Session): ReactElement {
+    private static renderSession(session: Session): ReactElement {
         return (
             <View style={{backgroundColor: 'white'}}>
 
@@ -103,7 +129,7 @@ class Events extends React.Component<EventProps, EventState> {
         );
     }
 
-    private renderWorkshop(workshop: Workshop): ReactElement {
+    private static renderWorkshop(workshop: Workshop): ReactElement {
         return (
             <View style={{backgroundColor: 'white'}}>
                 <Text style={{fontSize: 20, color: TEXT_PRIMARY}}>{workshop.title}</Text>
@@ -115,6 +141,22 @@ class Events extends React.Component<EventProps, EventState> {
                 </View>
             </View>
         );
+    }
+
+    private handleEventSelection(event: HELPSEvent) {
+        if (this.showOnlyBooked) {
+            if (isSession(event)) {
+                return this.props.cancelSession(event);
+            }
+
+            return this.props.cancelWorkshop(event as Workshop);
+        }
+
+        if (isSession(event)) {
+            return this.props.bookSession(event);
+        }
+
+        this.props.bookWorkshop(event as Workshop);
     }
 }
 
@@ -131,7 +173,9 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>): EventDispatch
     retrieveWorkshops: () => dispatch(retrieveWorkshops()),
     retrieveUserWorkshops: () => dispatch(retrieveUserWorkshops()),
     bookSession: session => dispatch(bookSession(session)),
-    bookWorkshop: workshop => dispatch(bookWorkshop(workshop))
+    bookWorkshop: workshop => dispatch(bookWorkshop(workshop)),
+    cancelWorkshop: workshop => dispatch(cancelWorkshop(workshop)),
+    cancelSession: session => dispatch(cancelSession(session))
 });
 
 export default connect<EventStateProps, EventDispatchProps, {}, AppState>(mapStateToProps, mapDispatchToProps)(Events);
