@@ -37,23 +37,10 @@ export const updateUser = (user: Student) => async (dispatch: Dispatch<any>) => 
         body: JSON.stringify(user)
     });
 
-    let userResult = await userResponse.json();
-
-    if (!userResponse.ok || !userResult.id || !userResult.name) {
-        dispatch(userError(userResult.message ? userResult.message : 'Update request failed'));
-        return;
-    }
-
-    if (!Array.isArray(userResult)) {
-        userResult = [userResult];
-    }
-
-    const students = userResult as Student[];
-
-    dispatch(receiveUser(students));
+    await dispatchUsers(dispatch)
 };
 
-export const retrieveUser = () => async (dispatch: Dispatch<any>) => {
+async function dispatchUsers(dispatch: Dispatch<any>) {
     dispatch(requestUser());
 
     const token = await AsyncStorage.getItem(LS_STORAGE_KEY);
@@ -83,4 +70,8 @@ export const retrieveUser = () => async (dispatch: Dispatch<any>) => {
     const students = userResult as Student[];
 
     dispatch(receiveUser(students));
+}
+
+export const retrieveUser = () => async (dispatch: Dispatch<any>) => {
+    await dispatchUsers(dispatch);
 };

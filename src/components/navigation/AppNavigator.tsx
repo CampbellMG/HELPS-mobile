@@ -13,16 +13,18 @@ const homeTabNavigator = createMaterialBottomTabNavigator({
     Profile: {
         screen: Profile,
         navigationOptions: {
-            tabBarIcon: ({focused}: { focused: boolean }) => {
-                return <ProfileIcon size={focused ? 30 : 20} color='black'/>;
+            tabBarLabel: 'My Info',
+            tabBarIcon: () => {
+                return <ProfileIcon size={20} color='black'/>;
             }
         }
     },
     Events: {
         screen: Events,
         navigationOptions: {
-            tabBarIcon: ({focused}: { focused: boolean }) => {
-                return <CalendarIcon size={focused ? 30 : 20} color='black'/>;
+            tabBarLabel: 'Events',
+            tabBarIcon: () => {
+                return <CalendarIcon size={20} color='black'/>;
             }
         },
         params: {
@@ -32,8 +34,9 @@ const homeTabNavigator = createMaterialBottomTabNavigator({
     MyEvents: {
         screen: Events,
         navigationOptions: {
-            tabBarIcon: ({focused}: { focused: boolean }) => {
-                return <CalendarIcon size={focused ? 30 : 20} color='black'/>;
+            tabBarLabel: 'My Events',
+            tabBarIcon: () => {
+                return <CalendarIcon size={20} color='black'/>;
             }
         },
         params: {
@@ -43,14 +46,16 @@ const homeTabNavigator = createMaterialBottomTabNavigator({
     FAQ: {
         screen: FAQ,
         navigationOptions: {
-            tabBarIcon: ({focused}: { focused: boolean }) => {
-                return <FAQIcon size={focused ? 30 : 20} color='black'/>;
+            labeled: true,
+            tabBarLabel: 'My Info',
+            tabBarIcon: () => {
+                return <FAQIcon size={20} color='black'/>;
             }
         }
     }
 }, {
     initialRouteName: 'Events',
-    labeled: false,
+    labeled: true,
     barStyle: {
         backgroundColor: NAV_BAR_GREY
     }
