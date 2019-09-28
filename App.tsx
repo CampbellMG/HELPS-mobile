@@ -6,6 +6,7 @@ import {AppNavigator} from "./src/components/navigation/AppNavigator";
 import {setTopLevelNavigator} from "./src/components/navigation/NavigationService";
 
 const store = configureStore();
+console.disableYellowBox = true;
 
 export default class App extends React.Component<{}, {}> {
 

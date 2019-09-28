@@ -47,7 +47,7 @@ const homeTabNavigator = createMaterialBottomTabNavigator({
         screen: FAQ,
         navigationOptions: {
             labeled: true,
-            tabBarLabel: 'My Info',
+            tabBarLabel: 'Info',
             tabBarIcon: () => {
                 return <FAQIcon size={20} color='black'/>;
             }

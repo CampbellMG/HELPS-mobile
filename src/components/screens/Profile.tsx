@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {ProfileDispatchProps, ProfileProps, ProfileState, ProfileStateProps} from "../../types/components/Profile";
 import {logout} from "../../store/actions/AuthActions";
 import {retrieveUser, updateUser} from "../../store/actions/UserActions";
-import {INPUT_BACKGROUND, PRIMARY} from "../../res/Colours";
+import {INPUT_BACKGROUND, NAV_BAR_GREY, PRIMARY, TEXT_SECONDARY} from "../../res/Colours";
 import {StudentKeyMap} from "../../types/model/Student";
 
 class Profile extends React.Component<ProfileProps, ProfileState> {
@@ -55,15 +55,16 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
                       keyExtractor={item => item}
                       renderItem={({item}) => (
                           <View style={{marginHorizontal: 8}}>
-                              <Text style={{marginLeft: 8, marginTop: 8}}>{StudentKeyMap[item]}</Text>
+                              <Text style={{marginLeft: 8, marginTop: 8, color: TEXT_SECONDARY}}>{StudentKeyMap[item]}</Text>
                               <TextInput value={profile[item].toString()}
                                          style={{
-                                             backgroundColor: INPUT_BACKGROUND,
+                                             backgroundColor: this.state.isEditing ? INPUT_BACKGROUND : NAV_BAR_GREY,
                                              borderWidth: 1,
                                              borderColor: PRIMARY,
                                              borderRadius: 5,
                                              margin: 8,
-                                             padding: 4
+                                             paddingHorizontal: 8,
+                                             paddingVertical: 4
                                          }}
                                          editable={this.state.isEditing}
                                          onChangeText={value => {
