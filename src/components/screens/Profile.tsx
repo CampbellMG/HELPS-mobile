@@ -58,9 +58,8 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
                               <Text style={{marginLeft: 8, marginTop: 8, color: TEXT_SECONDARY}}>{StudentKeyMap[item]}</Text>
                               <TextInput value={profile[item].toString()}
                                          style={{
-                                             backgroundColor: this.state.isEditing ? INPUT_BACKGROUND : NAV_BAR_GREY,
+                                             backgroundColor: this.state.isEditing ? NAV_BAR_GREY : INPUT_BACKGROUND,
                                              borderWidth: 1,
-                                             borderColor: PRIMARY,
                                              borderRadius: 5,
                                              margin: 8,
                                              paddingHorizontal: 8,
