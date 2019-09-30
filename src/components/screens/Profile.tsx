@@ -53,7 +53,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
         return (
             <FlatList data={Object.keys(profile)}
                       keyExtractor={item => item}
-                      renderItem={({item}) => (
+                      renderItem={({item}) => item in StudentKeyMap ? (
                           <View style={{marginHorizontal: 8}}>
                               <Text style={{marginLeft: 8, marginTop: 8, color: TEXT_SECONDARY}}>{StudentKeyMap[item]}</Text>
                               <TextInput value={profile[item].toString()}
@@ -71,7 +71,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
                                              this.forceUpdate()
                                          }}/>
                           </View>
-                      )}/>
+                      ) : <View/>}/>
         )
     }
 

@@ -7,7 +7,7 @@ import Login from "../screens/Login";
 import {createStackNavigator} from "react-navigation-stack";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
 import React from "react";
-import {CalendarIcon, FAQIcon, ProfileIcon} from "../../res/Icons";
+import {CalendarIcon, FAQIcon, ProfileCalendarIcon, ProfileIcon} from "../../res/Icons";
 
 const homeTabNavigator = createMaterialBottomTabNavigator({
     Profile: {
@@ -36,7 +36,7 @@ const homeTabNavigator = createMaterialBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'My Events',
             tabBarIcon: () => {
-                return <CalendarIcon size={20} color='black'/>;
+                return <ProfileCalendarIcon size={20} color='black'/>;
             }
         },
         params: {

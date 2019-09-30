@@ -5,7 +5,7 @@ import {AppState} from "../../types/store/StoreTypes";
 import {FAQDispatchProps, FAQProps, FAQState, FAQStateProps} from "../../types/components/FAQ";
 import {ThunkDispatch} from 'redux-thunk';
 import {fetchMessages} from "../../store/actions/MessageActions";
-import {INPUT_BACKGROUND, PRIMARY} from "../../res/Colours";
+import {INPUT_BACKGROUND, PRIMARY, PRIMARY_LITE} from "../../res/Colours";
 
 class FAQ extends React.Component<FAQProps, FAQState> {
 
@@ -30,13 +30,13 @@ class FAQ extends React.Component<FAQProps, FAQState> {
             <View style={{marginTop: StatusBar.currentHeight, flex: 1, backgroundColor: 'white'}}>
 
                 <View style={{flexDirection: 'row'}}>
-                    <TouchableOpacity style={{flex: 1, paddingVertical: 16, backgroundColor: selectedContentType === "PROGRAMS" ? PRIMARY : INPUT_BACKGROUND}}
+                    <TouchableOpacity style={{flex: 1, paddingVertical: 16, backgroundColor: selectedContentType === "PROGRAMS" ? PRIMARY_LITE : PRIMARY}}
                                       onPress={this.setProgramsActive}>
                         <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold'}}>
                             Programs
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, paddingVertical: 16, backgroundColor: selectedContentType === "PROGRAMS" ? PRIMARY : INPUT_BACKGROUND}}
+                    <TouchableOpacity style={{flex: 1, paddingVertical: 16, backgroundColor: selectedContentType === "FAQ" ?  PRIMARY_LITE : PRIMARY}}
                                       onPress={this.setFAQActive}>
                         <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold'}}>
                             FAQ
